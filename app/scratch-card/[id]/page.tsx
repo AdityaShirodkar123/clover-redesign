@@ -1,19 +1,32 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft, MapPin, Share2, Star } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, MapPin, Share2, Star } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
 
 export default function ScratchCardDetails() {
-  const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // Mock data for a scratch card
   const card = {
@@ -30,30 +43,42 @@ export default function ScratchCardDetails() {
     description:
       "Become a millionaire instantly with our most exciting scratch card yet! With multiple ways to win and a grand prize of $5 million, Millionaire Maker offers the best odds for life-changing wins.",
     howToPlay:
-      "1. Scratch off the coating to reveal your numbers.\n2. Match any of your numbers to the winning numbers to win the prize shown.\n3. Reveal a money bag symbol to win all prizes automatically!\n4. Uncover the 5X or 10X multiplier to multiply your winnings.",
-  }
+      "1. Scratch off the coating to reveal your numbers.\n2. Match any of your numbers to the winning numbers to win the prize shown.\n3. Reveal a money bag symbol to win all prizes automatically!\n4. Uncover the 5X or 10X multiplier to multiply your winnings."
+  };
 
   // Mock data for past winners
   const pastWinners = [
     { date: "2023-12-15", location: "Los Angeles, CA", prize: "$5,000,000" },
     { date: "2023-11-03", location: "San Francisco, CA", prize: "$1,000,000" },
     { date: "2023-10-22", location: "San Diego, CA", prize: "$100,000" },
-    { date: "2023-09-18", location: "Sacramento, CA", prize: "$50,000" },
-  ]
+    { date: "2023-09-18", location: "Sacramento, CA", prize: "$50,000" }
+  ];
 
   // Mock data for social stats
   const socialStats = {
     favorites: 1243,
     shares: 567,
-    comments: 89,
-  }
+    comments: 89
+  };
 
   // Mock data for purchase locations
   const purchaseLocations = [
-    { name: "Lucky Corner Store", address: "123 Main St, Los Angeles, CA 90001", distance: "0.5 miles" },
-    { name: "7-Eleven", address: "456 Oak Ave, Los Angeles, CA 90002", distance: "1.2 miles" },
-    { name: "QuickMart", address: "789 Pine Rd, Los Angeles, CA 90003", distance: "2.3 miles" },
-  ]
+    {
+      name: "Lucky Corner Store",
+      address: "123 Main St, Los Angeles, CA 90001",
+      distance: "0.5 miles"
+    },
+    {
+      name: "7-Eleven",
+      address: "456 Oak Ave, Los Angeles, CA 90002",
+      distance: "1.2 miles"
+    },
+    {
+      name: "QuickMart",
+      address: "789 Pine Rd, Los Angeles, CA 90003",
+      distance: "2.3 miles"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -72,8 +97,9 @@ export default function ScratchCardDetails() {
       <main className="container py-6 md:py-12">
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
+            {" "}
             <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="w-full md:w-1/2 relative">
+              <div className="w-full md:w-1/2 space-y-4">
                 <Image
                   src={card.image || "/placeholder.svg"}
                   alt={card.name}
@@ -81,25 +107,32 @@ export default function ScratchCardDetails() {
                   height={400}
                   className="rounded-lg shadow-lg"
                 />
-                <div className="absolute top-2 left-2 flex gap-1">
+
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-yellow-500 bg-clip-text text-transparent">
+                  {card.name}
+                </h1>
+                <div className="flex gap-1">
                   {card.tags.map((tag, index) => (
-                    <Badge key={index} variant="secondary" className="bg-indigo-600 text-white">
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-indigo-600 text-white"
+                    >
                       {tag}
                     </Badge>
                   ))}
                 </div>
-              </div>
-              <div className="w-full md:w-1/2 space-y-4">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-yellow-500 bg-clip-text text-transparent">
-                  {card.name}
-                </h1>
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-green-600">${card.price}</span>
+                  <span className="text-2xl font-bold text-green-600">
+                    ${card.price}
+                  </span>
                   <span className="text-gray-600">• Odds: {card.odds}</span>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-700">Jackpot: ${card.jackpot}</span>
+                    <span className="text-gray-700">
+                      Jackpot: ${card.jackpot}
+                    </span>
                     <span className="font-medium text-gray-900">
                       {card.remainingJackpots}/{card.totalJackpots} remaining
                     </span>
@@ -112,7 +145,9 @@ export default function ScratchCardDetails() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-600">ROI Score:</span>
-                  <span className="font-medium text-green-600">{card.roi.toFixed(2)}</span>
+                  <span className="font-medium text-green-600">
+                    {card.roi.toFixed(2)}
+                  </span>
                 </div>
                 <p className="text-gray-700">{card.description}</p>
                 <div className="flex gap-2">
@@ -121,17 +156,23 @@ export default function ScratchCardDetails() {
                     className="flex-1 bg-gradient-to-r from-green-600 to-yellow-500 hover:from-green-500 hover:to-yellow-400"
                     onClick={() => setIsFavorite(!isFavorite)}
                   >
-                    <Star className={`mr-2 h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
+                    <Star
+                      className={`mr-2 h-4 w-4 ${
+                        isFavorite ? "fill-current" : ""
+                      }`}
+                    />
                     {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
                   </Button>
-                  <Button variant="outline" className="border-gray-200 hover:bg-gray-100">
+                  <Button
+                    variant="outline"
+                    className="border-gray-200 hover:bg-gray-100"
+                  >
                     <Share2 className="mr-2 h-4 w-4" />
                     Share
                   </Button>
                 </div>
               </div>
             </div>
-
             <Card className="bg-white border-gray-200 shadow-sm">
               <CardHeader>
                 <CardTitle>How to Play</CardTitle>
@@ -144,7 +185,6 @@ export default function ScratchCardDetails() {
                 </ol>
               </CardContent>
             </Card>
-
             <Tabs defaultValue="past-winners">
               <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-1">
                 <TabsTrigger
@@ -153,7 +193,10 @@ export default function ScratchCardDetails() {
                 >
                   Past Winners
                 </TabsTrigger>
-                <TabsTrigger value="social" className="data-[state=active]:bg-white data-[state=active]:text-gray-900">
+                <TabsTrigger
+                  value="social"
+                  className="data-[state=active]:bg-white data-[state=active]:text-gray-900"
+                >
                   Social Data
                 </TabsTrigger>
                 <TabsTrigger
@@ -167,7 +210,9 @@ export default function ScratchCardDetails() {
                 <Card className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle>Recent Winners</CardTitle>
-                    <CardDescription>Check out the latest big wins!</CardDescription>
+                    <CardDescription>
+                      Check out the latest big wins!
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Table>
@@ -195,20 +240,28 @@ export default function ScratchCardDetails() {
                 <Card className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle>Social Stats</CardTitle>
-                    <CardDescription>See how popular this scratch card is!</CardDescription>
+                    <CardDescription>
+                      See how popular this scratch card is!
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
-                        <div className="text-2xl font-bold text-indigo-400">{socialStats.favorites}</div>
+                        <div className="text-2xl font-bold text-indigo-400">
+                          {socialStats.favorites}
+                        </div>
                         <div className="text-sm text-gray-600">Favorites</div>
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-purple-400">{socialStats.shares}</div>
+                        <div className="text-2xl font-bold text-purple-400">
+                          {socialStats.shares}
+                        </div>
                         <div className="text-sm text-gray-600">Shares</div>
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-pink-400">{socialStats.comments}</div>
+                        <div className="text-2xl font-bold text-pink-400">
+                          {socialStats.comments}
+                        </div>
                         <div className="text-sm text-gray-600">Comments</div>
                       </div>
                     </div>
@@ -219,7 +272,9 @@ export default function ScratchCardDetails() {
                 <Card className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle>Nearby Retailers</CardTitle>
-                    <CardDescription>Find a store to purchase this scratch card</CardDescription>
+                    <CardDescription>
+                      Find a store to purchase this scratch card
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
@@ -227,9 +282,15 @@ export default function ScratchCardDetails() {
                         <div key={index} className="flex items-start gap-4">
                           <MapPin className="h-5 w-5 text-indigo-400 mt-1" />
                           <div>
-                            <div className="font-medium text-gray-900">{location.name}</div>
-                            <div className="text-sm text-gray-600">{location.address}</div>
-                            <div className="text-sm text-gray-500">{location.distance}</div>
+                            <div className="font-medium text-gray-900">
+                              {location.name}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              {location.address}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {location.distance}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -294,11 +355,15 @@ export default function ScratchCardDetails() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Game Start Date:</span>
-                  <span className="font-medium text-gray-900">January 1, 2023</span>
+                  <span className="font-medium text-gray-900">
+                    January 1, 2023
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Last Updated:</span>
-                  <span className="font-medium text-gray-900">March 15, 2023</span>
+                  <span className="font-medium text-gray-900">
+                    March 15, 2023
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -306,5 +371,5 @@ export default function ScratchCardDetails() {
         </div>
       </main>
     </div>
-  )
+  );
 }
