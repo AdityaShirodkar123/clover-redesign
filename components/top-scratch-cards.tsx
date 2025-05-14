@@ -55,7 +55,7 @@ export default function TopScratchCards() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">
-          Top Performing Scratch Cards
+          Best Scratch Cards by Odds
         </h2>
         <Button variant="outline" size="sm">
           View All
@@ -115,9 +115,9 @@ export default function TopScratchCards() {
                     className="h-2 bg-gray-200"
                   />
                   <div className="flex justify-between items-center text-sm pt-2">
-                    <span className="text-gray-600">Game ID</span>
+                    <span className="text-gray-600">Jackpot Prize</span>
                     <span className="font-medium text-gray-900">
-                      {card.GameID}
+                      ${(card.Jackpot / 100).toLocaleString()}
                     </span>
                   </div>
                 </div>

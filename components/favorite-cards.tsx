@@ -1,16 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Star, LogIn } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { Star, LogIn } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 export default function FavoriteCards() {
   // Mock authentication state - would be replaced with actual auth
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Mock favorite cards data
   const favoriteCards = [
@@ -23,7 +30,7 @@ export default function FavoriteCards() {
       totalJackpots: 12,
       odds: "1 in 3.05",
       roi: 0.88,
-      image: "/placeholder.svg?height=200&width=300",
+      image: "/placeholder.svg?height=200&width=300"
     },
     {
       id: 6,
@@ -34,9 +41,9 @@ export default function FavoriteCards() {
       totalJackpots: 15,
       odds: "1 in 3.22",
       roi: 0.79,
-      image: "/placeholder.svg?height=200&width=300",
-    },
-  ]
+      image: "/placeholder.svg?height=200&width=300"
+    }
+  ];
 
   if (!isLoggedIn) {
     return (
@@ -44,19 +51,22 @@ export default function FavoriteCards() {
         <div className="bg-muted rounded-full p-6 mb-4">
           <Star className="h-10 w-10 text-muted-foreground" />
         </div>
-        <h3 className="text-xl font-semibold mb-2">Sign in to view your favorites</h3>
+        <h3 className="text-xl font-semibold mb-2">
+          Sign in to view your favorites
+        </h3>
         <p className="text-muted-foreground max-w-md mb-6">
-          Track your favorite scratch cards to get updates on odds, remaining prizes, and more.
+          Track your favorite scratch cards to get updates on odds, remaining
+          prizes, and more.
         </p>
         <div className="flex gap-4">
           <Button onClick={() => setIsLoggedIn(true)} className="gap-2">
             <LogIn className="h-4 w-4" />
-            Sign In
+            Login
           </Button>
-          <Button variant="outline">Create Account</Button>
+          <Button variant="outline">Sign Up</Button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -69,7 +79,7 @@ export default function FavoriteCards() {
       </div>
       {favoriteCards.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {favoriteCards.map((card) => (
+          {favoriteCards.map(card => (
             <Card key={card.id} className="overflow-hidden">
               <div className="relative">
                 <Image
@@ -102,11 +112,20 @@ export default function FavoriteCards() {
                       {card.remainingJackpots}/{card.totalJackpots}
                     </span>
                   </div>
-                  <Progress value={(card.remainingJackpots / card.totalJackpots) * 100} className="h-2" />
+                  <Progress
+                    value={(card.remainingJackpots / card.totalJackpots) * 100}
+                    className="h-2"
+                  />
                   <div className="flex justify-between items-center text-sm pt-2">
                     <span className="text-muted-foreground">ROI Score</span>
                     <span
-                      className={`font-medium ${card.roi > 0.8 ? "text-green-600" : card.roi > 0.7 ? "text-amber-600" : "text-red-600"}`}
+                      className={`font-medium ${
+                        card.roi > 0.8
+                          ? "text-green-600"
+                          : card.roi > 0.7
+                          ? "text-amber-600"
+                          : "text-red-600"
+                      }`}
                     >
                       {card.roi.toFixed(2)}
                     </span>
@@ -124,10 +143,12 @@ export default function FavoriteCards() {
       ) : (
         <div className="text-center py-12 border rounded-lg bg-muted/20">
           <h3 className="text-lg font-medium mb-2">No favorites yet</h3>
-          <p className="text-muted-foreground mb-4">Start adding scratch cards to your favorites to track them here.</p>
+          <p className="text-muted-foreground mb-4">
+            Start adding scratch cards to your favorites to track them here.
+          </p>
           <Button>Browse Cards</Button>
         </div>
       )}
     </div>
-  )
+  );
 }

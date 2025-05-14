@@ -8,23 +8,61 @@ import { Calendar, CreditCard, Home, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useCountdowns } from "@/app/context/CountdownContext";
 
 interface SidebarNavProps {
   className?: string;
 }
 
+// Helper to format countdown for sidebar
+function formatSidebarCountdown(
+  hours: number,
+  minutes: number,
+  seconds: number
+) {
+  const days = Math.floor(hours / 24);
+  const remainingHours = hours % 24;
+  if (hours === 0 && minutes === 0) {
+    return `${seconds}s`;
+  }
+  if (days > 0) {
+    return `${days}d ${remainingHours}h ${minutes}m`;
+  }
+  return `${remainingHours}h ${minutes}m`;
+}
+
+// Helper to get the nearest countdown between two draws
+function getNearestCountdown(
+  a?: { hours: number; minutes: number; seconds: number },
+  b?: { hours: number; minutes: number; seconds: number }
+) {
+  if (!a && !b) return undefined;
+  if (!a) return b;
+  if (!b) return a;
+  const aTotal = a.hours * 3600 + a.minutes * 60 + a.seconds;
+  const bTotal = b.hours * 3600 + b.minutes * 60 + b.seconds;
+  return aTotal <= bTotal ? a : b;
+}
+
+// Map for live jackpot values (could be dynamic in the future)
+const jackpotMap: Record<string, string> = {
+  powerball: "$347,000,000",
+  megaMillions: "$215,000,000"
+};
+
 export function SidebarNav({ className }: SidebarNavProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const { countdowns } = useCountdowns();
 
   const navItems = [
     {
-      title: "Home",
+      title: "Scratch Cards",
       href: "/",
-      icon: Home
+      icon: CreditCard
     },
     {
-      title: "Scratch Cards",
+      title: "Remove later !!",
       href: "/scratch-cards",
       icon: CreditCard
     },
@@ -93,26 +131,98 @@ export function SidebarNav({ className }: SidebarNavProps) {
               <h4 className="mb-2 text-sm font-medium text-gray-900">
                 Upcoming Draws
               </h4>
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs">
-                  <span className="text-gray-600">Powerball</span>
-                  <span className="text-green-600">2h 45m</span>
+              <div className="space-y-3">
+                <div className="rounded-md bg-gray-100 p-2 mb-3">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-600 font-medium">Powerball</span>
+                    <span className="text-green-600">
+                      {countdowns && countdowns.powerball
+                        ? formatSidebarCountdown(
+                            countdowns.powerball.hours,
+                            countdowns.powerball.minutes,
+                            countdowns.powerball.seconds
+                          )
+                        : "--"}
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-green-600 mt-1">
+                    {jackpotMap.powerball}
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-gray-600">Mega Millions</span>
-                  <span className="text-green-600">1d 4h</span>
+                <div className="rounded-md bg-gray-100 p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-600 font-medium">
+                      Mega Millions
+                    </span>
+                    <span className="text-green-600">
+                      {countdowns && countdowns.megaMillions
+                        ? formatSidebarCountdown(
+                            countdowns.megaMillions.hours,
+                            countdowns.megaMillions.minutes,
+                            countdowns.megaMillions.seconds
+                          )
+                        : "--"}
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-green-600 mt-1">
+                    {jackpotMap.megaMillions}
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-gray-600">EuroMillions</span>
-                  <span className="text-green-600">2d 6h</span>
+                {/* Pick-3 and Pick-4 Section */}
+                <div className="rounded-md bg-gray-100 p-2 mt-4">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-600 font-medium">Pick-3</span>
+                    <span className="text-green-600">
+                      {(() => {
+                        const c = getNearestCountdown(
+                          countdowns.pick3midday,
+                          countdowns.pick3evening
+                        );
+                        return c
+                          ? formatSidebarCountdown(
+                              c.hours,
+                              c.minutes,
+                              c.seconds
+                            )
+                          : "--";
+                      })()}
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-green-600 mt-1">
+                    Up to $500
+                  </div>
+                </div>
+                <div className="rounded-md bg-gray-100 p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-600 font-medium">Pick-4</span>
+                    <span className="text-green-600">
+                      {(() => {
+                        const c = getNearestCountdown(
+                          countdowns.pick4midday,
+                          countdowns.pick4evening
+                        );
+                        return c
+                          ? formatSidebarCountdown(
+                              c.hours,
+                              c.minutes,
+                              c.seconds
+                            )
+                          : "--";
+                      })()}
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-green-600 mt-1">
+                    Up to $5,000
+                  </div>
                 </div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="mt-3 w-full border-gray-200 bg-white hover:bg-gray-100 text-gray-900"
+                asChild
               >
-                View All Draws
+                <Link href="/draw-games">View All Draws</Link>
               </Button>
             </div>
           </div>

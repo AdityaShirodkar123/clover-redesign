@@ -14,13 +14,14 @@ CORS(app)
 STRAPI_URL = os.getenv("STRAPI_API_URL")
 STRAPI_TOKEN = os.getenv("STRAPI_API_KEY")
 
-@app.route("/top_games", methods=["GET"])
+@app.route("/api/top_games_odds", methods=["GET"])
 def get_top_games():
+    STRAPI_URL_SCRATCH = STRAPI_URL + "/nj-scratchers"
     try:
         top_n = int(request.args.get("n", 4))
         
         response = requests.get(
-            STRAPI_URL,
+            STRAPI_URL_SCRATCH,
             params={
                 "pagination[pageSize]": top_n,
                 "sort[0]": "Place:asc"
@@ -58,6 +59,48 @@ def get_top_games():
         return jsonify({
             "error": str(e),
             "message": "Failed to fetch data from Strapi"
+        }), 500
+    
+@app.route("/api/top_counties", methods=["GET"])
+def get_top_counties():
+    STRAPI_URL_COUNTIES = STRAPI_URL + "/nj-counties"
+    try:
+        response = requests.get(
+            STRAPI_URL_COUNTIES,
+            params={
+                "sort[0]": "TotalJackpot:desc",
+                "fields[0]": "County",
+                "fields[1]": "NumWinners",
+                "fields[2]": "TotalJackpot",
+                "fields[3]": "id"
+            },
+            headers={
+                "Authorization": f"Bearer {STRAPI_TOKEN}",
+                "Content-Type": "application/json"
+            }
+        )
+
+        #print("Strapi raw response:", response.text)
+
+        if response.status_code != 200:
+            return jsonify({
+                "error": "Strapi API request failed",
+                "status_code": response.status_code,
+                "endpoint": response.url,
+                "response_snippet": response.text[:200]
+            }), 502
+
+        strapi_data = response.json()
+        data = strapi_data.get("data", [])
+        
+        return jsonify(data)
+
+    except Exception as e:
+        import traceback
+        print("Exception occurred:", traceback.format_exc())
+        return jsonify({
+            "error": str(e),
+            "message": "Failed to fetch county data from Strapi"
         }), 500
 
 @app.route('/health')
