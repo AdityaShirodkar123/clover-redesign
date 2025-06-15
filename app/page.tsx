@@ -43,7 +43,7 @@ import StateSelector from "@/components/state-selector";
 import JackpotMap from "@/components/jackpot-map";
 import TopScratchCards from "@/components/top-scratch-cards";
 import FavoriteCards from "@/components/favorite-cards";
-import SocialFeed from "@/components/social-feed";
+import LotterySocialFeed from "@/components/lottery-social-feed";
 import Navbar from "@/components/navbar";
 
 export default function LotteryAnalytics() {
@@ -138,7 +138,7 @@ export default function LotteryAnalytics() {
                   value="social"
                   className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm"
                 >
-                  <SocialFeed
+                  <LotterySocialFeed
                     isLoggedIn={isLoggedIn}
                     setIsLoggedIn={setIsLoggedIn}
                   />
